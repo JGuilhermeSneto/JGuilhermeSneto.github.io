@@ -4,14 +4,445 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>JGSneto | DEV</title>
-  <link rel="stylesheet" href="index.css" />
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --black:   #0a0a0f;
+      --dark:    #12121e;
+      --dark2:   #1a1a2e;
+      --panel:   #16213e;
+      --cyan:    #00e5ff;
+      --cyan2:   #00b8d9;
+      --purple:  #bf00ff;
+      --purple2: #9400d3;
+      --pink:    #ff0090;
+      --green:   #00ff88;
+      --yellow:  #ffe600;
+      --white:   #e8f4f8;
+      --muted:   #4a7a8a;
+      --border:  #00e5ff44;
+      --border2: #bf00ff44;
+    }
+
+    * { margin:0; padding:0; box-sizing:border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--black);
+      color: var(--white);
+      font-family: 'VT323', monospace;
+      font-size: 18px;
+      overflow-x: hidden;
+      image-rendering: pixelated;
+    }
+
+    /* ── PIXEL GRID BG ── */
+    .pixel-bg {
+      position: fixed; inset: 0; z-index: 0;
+      background-color: var(--black);
+      background-image:
+        linear-gradient(rgba(0,229,255,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,229,255,0.04) 1px, transparent 1px);
+      background-size: 16px 16px;
+      pointer-events: none;
+    }
+
+    /* starfield */
+    .stars { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+    .stars span {
+      position: absolute; display: block; width: 4px; height: 4px;
+      background: var(--cyan); image-rendering: pixelated;
+      animation: twinkle 3s step-end infinite;
+    }
+    @keyframes twinkle { 0%,100%{opacity:1;} 25%{opacity:0;} 50%{opacity:0.6;} 75%{opacity:0;} }
+
+    /* scanlines */
+    .scanlines {
+      position: fixed; inset: 0; z-index: 9999; pointer-events: none;
+      background: repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0,0,0,0.12) 3px, rgba(0,0,0,0.12) 4px);
+    }
+
+    /* ── HEADER ── */
+    header {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+      height: 56px; background: var(--dark2);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 24px;
+      border-bottom: 4px solid var(--cyan);
+      box-shadow: 0 4px 0 var(--purple2), 0 0 24px rgba(0,229,255,0.2);
+    }
+    header::after {
+      content: ''; position: absolute; bottom: -8px; left: 0; right: 0; height: 4px;
+      background: var(--purple); box-shadow: 0 0 16px var(--purple);
+    }
+
+    .logo {
+      font-family: 'Press Start 2P', monospace; font-size: 0.85rem;
+      color: var(--cyan); text-shadow: 2px 2px 0 var(--purple2), 0 0 12px var(--cyan);
+      text-decoration: none; letter-spacing: 2px;
+      animation: logoPulse 2s step-end infinite;
+    }
+    @keyframes logoPulse {
+      0%,100%{ text-shadow: 2px 2px 0 var(--purple2), 0 0 12px var(--cyan); }
+      50%    { text-shadow: 2px 2px 0 var(--purple2), 0 0 24px var(--cyan), 0 0 40px rgba(0,229,255,0.4); }
+    }
+    .logo span { color: var(--purple); text-shadow: 2px 2px 0 #600, 0 0 12px var(--purple); }
+
+    nav { display: flex; gap: 4px; align-items: center; }
+    nav a {
+      font-family: 'Press Start 2P', monospace; font-size: 0.5rem;
+      color: var(--muted); text-decoration: none;
+      padding: 8px 10px; border: 2px solid transparent; letter-spacing: 1px;
+    }
+    nav a:hover {
+      color: var(--black); background: var(--cyan);
+      border: 2px solid var(--white);
+      box-shadow: 2px 2px 0 var(--purple), inset -2px -2px 0 rgba(0,0,0,0.3);
+    }
+    .nav-cta {
+      background: var(--purple) !important; color: var(--white) !important;
+      border: 2px solid var(--pink) !important; box-shadow: 2px 2px 0 #600 !important;
+    }
+    .nav-cta:hover { background: var(--pink) !important; box-shadow: 2px 2px 0 var(--purple) !important; }
+
+    .header-stats { display: flex; gap: 12px; align-items: center; }
+    .stat-bar { display: flex; align-items: center; gap: 6px; font-family: 'Press Start 2P', monospace; font-size: 0.4rem; }
+    .bar-track { width: 64px; height: 8px; background: #111; border: 2px solid #333; display: flex; }
+    .bar-fill { height: 100%; }
+    .bar-fill.hp { background: var(--green); width: 80%; }
+    .bar-fill.xp { background: var(--yellow); width: 65%; transition: width 0.3s step-end; }
+    .stat-label { color: var(--muted); }
+
+    /* ── MAIN ── */
+    main { position: relative; z-index: 1; padding-top: 56px; }
+    section { position: relative; z-index: 1; padding: 80px 40px; max-width: 1100px; margin: 0 auto; }
+
+    /* ── HERO ── */
+    #inicio {
+      min-height: 100vh; display: flex; flex-direction: column; justify-content: center;
+      padding-top: 100px; max-width: 100%; position: relative; overflow: hidden;
+    }
+    .hero-inner { max-width: 1100px; margin: 0 auto; padding: 0 40px; }
+
+    /* SPRITE */
+    .hero-sprite {
+      position: absolute; right: 60px; bottom: 80px; width: 96px; height: 128px;
+      image-rendering: pixelated; animation: heroFloat 2s step-end infinite;
+    }
+    @keyframes heroFloat { 0%,100%{transform:translateY(0);} 50%{transform:translateY(-8px);} }
+
+    .pixel-tag {
+      font-family: 'Press Start 2P', monospace; font-size: 0.6rem; letter-spacing: 3px;
+      color: var(--cyan); margin-bottom: 20px; animation: fadeUp 0.5s step-end both;
+    }
+    .pixel-tag::before { content: '▶ '; color: var(--yellow); }
+
+    .hero-name {
+      font-family: 'Press Start 2P', monospace; font-size: clamp(1rem, 3vw, 1.8rem);
+      line-height: 1.6; color: var(--white); text-shadow: 4px 4px 0 var(--purple), 6px 6px 0 rgba(0,0,0,0.5);
+      margin-bottom: 16px; animation: fadeUp 0.5s 0.1s step-end both;
+    }
+    .hero-name .nc { color: var(--cyan); }
+
+    .hero-role {
+      font-family: 'Press Start 2P', monospace; font-size: 0.65rem; letter-spacing: 3px;
+      color: var(--yellow); text-shadow: 2px 2px 0 #a00; margin-bottom: 28px;
+      animation: fadeUp 0.5s 0.2s step-end both;
+    }
+
+    .hero-desc {
+      font-family: 'VT323', monospace; font-size: 1.3rem; color: var(--muted);
+      max-width: 480px; line-height: 1.6; margin-bottom: 36px;
+      animation: fadeUp 0.5s 0.3s step-end both;
+    }
+    .hero-desc strong { color: var(--white); }
+
+    .hero-btns { display: flex; gap: 16px; flex-wrap: wrap; animation: fadeUp 0.5s 0.4s step-end both; }
+
+    .pixel-btn {
+      font-family: 'Press Start 2P', monospace; font-size: 0.55rem; letter-spacing: 1px;
+      text-transform: uppercase; text-decoration: none; padding: 12px 20px; display: inline-block;
+    }
+    .pixel-btn:active { transform: translate(2px,2px); }
+    .pixel-btn-primary {
+      background: var(--cyan); color: var(--black);
+      border-top: 4px solid #fff; border-left: 4px solid #fff;
+      border-bottom: 4px solid var(--cyan2); border-right: 4px solid var(--cyan2);
+    }
+    .pixel-btn-primary:hover {
+      background: var(--yellow); color: var(--black);
+      border-top: 4px solid #fff; border-left: 4px solid #fff;
+      border-bottom: 4px solid #aa9900; border-right: 4px solid #aa9900;
+    }
+    .pixel-btn-secondary {
+      background: var(--purple); color: var(--white);
+      border-top: 4px solid #df9fff; border-left: 4px solid #df9fff;
+      border-bottom: 4px solid var(--purple2); border-right: 4px solid var(--purple2);
+    }
+    .pixel-btn-secondary:hover {
+      background: var(--pink);
+      border-top: 4px solid #ffaacc; border-left: 4px solid #ffaacc;
+      border-bottom: 4px solid #880044; border-right: 4px solid #880044;
+    }
+
+    /* DIALOG BOX */
+    .dialog-box {
+      margin-top: 40px; background: var(--dark2);
+      border-top: 4px solid var(--white); border-left: 4px solid var(--white);
+      border-bottom: 4px solid #333; border-right: 4px solid #333;
+      padding: 20px 24px; max-width: 500px; position: relative;
+      font-family: 'VT323', monospace; font-size: 1.2rem; line-height: 1.8;
+      animation: fadeUp 0.5s 0.5s step-end both;
+    }
+    .dialog-box::before {
+      content: ''; position: absolute; top: 4px; left: 4px; right: 4px; bottom: 4px;
+      border: 2px solid rgba(0,229,255,0.15); pointer-events: none;
+    }
+    .dialog-title {
+      font-family: 'Press Start 2P', monospace; font-size: 0.55rem; color: var(--cyan);
+      margin-bottom: 12px; display: flex; align-items: center; gap: 8px;
+      border-bottom: 2px solid var(--border); padding-bottom: 8px;
+    }
+    .dialog-arrow { color: var(--white); animation: arrowBlink 0.8s step-end infinite; margin-left: auto; }
+    @keyframes arrowBlink { 0%,100%{opacity:1;} 50%{opacity:0;} }
+    .dialog-line .key { color: var(--cyan); }
+    .dialog-line .vg { color: var(--green); }
+    .dialog-line .vp { color: #d97bff; }
+    .dialog-line .vy { color: var(--yellow); }
+
+    /* STATUS */
+    .status-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-family: 'Press Start 2P', monospace; font-size: 0.45rem; color: var(--green);
+      padding: 8px 14px; background: var(--dark2);
+      border-top: 2px solid var(--green); border-left: 2px solid var(--green);
+      border-bottom: 2px solid #004422; border-right: 2px solid #004422; margin-bottom: 20px;
+    }
+    .status-dot { width: 8px; height: 8px; background: var(--green); animation: statusBlink 1s step-end infinite; }
+    @keyframes statusBlink { 0%,100%{opacity:1;} 50%{opacity:0;} }
+
+    .level-display {
+      display: inline-flex; align-items: center; gap: 10px;
+      font-family: 'Press Start 2P', monospace; font-size: 0.45rem; color: var(--yellow); margin-bottom: 16px;
+    }
+    .level-num {
+      background: var(--yellow); color: var(--black); padding: 4px 8px;
+      border-top: 2px solid #fff; border-left: 2px solid #fff;
+      border-bottom: 2px solid #aa9900; border-right: 2px solid #aa9900;
+    }
+
+    /* ── SEC HEADER ── */
+    .sec-header { margin-bottom: 48px; }
+    .sec-tag {
+      font-family: 'Press Start 2P', monospace; font-size: 0.5rem; letter-spacing: 3px;
+      color: var(--yellow); margin-bottom: 10px; display: flex; align-items: center; gap: 10px;
+    }
+    .sec-tag::before { content: '//'; color: var(--pink); }
+    .sec-title {
+      font-family: 'Press Start 2P', monospace; font-size: clamp(0.9rem, 2.5vw, 1.4rem);
+      color: var(--white); text-shadow: 3px 3px 0 var(--purple); letter-spacing: 2px; line-height: 1.5;
+    }
+    .sec-title span { color: var(--cyan); text-shadow: 3px 3px 0 #006677; }
+
+    /* GLITCH */
+    .glitch { position: relative; }
+    .glitch::before, .glitch::after {
+      content: attr(data-text); position: absolute; top: 0; left: 0;
+      font-family: inherit; font-size: inherit; font-weight: inherit; color: inherit;
+    }
+    .glitch::before { color: var(--pink); clip-path: polygon(0 20%, 100% 20%, 100% 40%, 0 40%); animation: glitch1 4s step-end infinite; }
+    .glitch::after  { color: var(--cyan); clip-path: polygon(0 60%, 100% 60%, 100% 80%, 0 80%); animation: glitch2 4s step-end infinite; }
+    @keyframes glitch1 { 0%,90%,100%{transform:translate(0);opacity:0;} 92%{transform:translate(-3px,0);opacity:0.8;} 94%{transform:translate(3px,0);opacity:0.8;} 96%{opacity:0;} }
+    @keyframes glitch2 { 0%,90%,100%{transform:translate(0);opacity:0;} 93%{transform:translate(3px,0);opacity:0.8;} 95%{transform:translate(-3px,0);opacity:0.8;} 97%{opacity:0;} }
+
+    /* WINDOW */
+    .pixel-window { background: var(--dark2); border-top: 4px solid #aaa; border-left: 4px solid #aaa; border-bottom: 4px solid #222; border-right: 4px solid #222; overflow: hidden; }
+    .window-titlebar {
+      background: var(--cyan); padding: 6px 12px;
+      display: flex; align-items: center; justify-content: space-between; border-bottom: 4px solid var(--cyan2);
+    }
+    .win-title { font-family: 'Press Start 2P', monospace; font-size: 0.45rem; color: var(--black); letter-spacing: 1px; }
+    .win-btns { display: flex; gap: 4px; }
+    .win-btn { width: 12px; height: 12px; border-top: 2px solid #fff; border-left: 2px solid #fff; border-bottom: 2px solid #555; border-right: 2px solid #555; }
+    .win-btn.r { background: #ff5555; } .win-btn.y { background: var(--yellow); } .win-btn.g { background: var(--green); }
+
+    /* ── SOBRE ── */
+    .sobre-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; align-items: start; }
+    .sobre-text { font-family: 'VT323', monospace; font-size: 1.2rem; line-height: 1.7; color: var(--muted); }
+    .sobre-text p { margin-bottom: 16px; }
+    .sobre-text strong { color: var(--white); }
+    .hl { color: var(--cyan); font-family: 'Press Start 2P', monospace; font-size: 0.8rem; }
+    .menu-arr { color: var(--yellow); animation: arrowBlink 0.6s step-end infinite; margin-right: 6px; }
+
+    .skills-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; margin-top: 24px; }
+    .skill-pill {
+      font-family: 'Press Start 2P', monospace; font-size: 0.4rem;
+      padding: 10px 8px; background: var(--dark);
+      border-top: 3px solid #444; border-left: 3px solid #444;
+      border-bottom: 3px solid #111; border-right: 3px solid #111;
+      color: var(--cyan); text-align: center;
+      display: flex; flex-direction: column; align-items: center; gap: 8px; cursor: pointer;
+    }
+    .skill-pill:hover {
+      background: var(--cyan); color: var(--black);
+      border-top: 3px solid #fff; border-left: 3px solid #fff;
+      border-bottom: 3px solid var(--cyan2); border-right: 3px solid var(--cyan2);
+      transform: translate(-1px,-1px);
+    }
+    .skill-pill:hover .pxicon * { opacity: 0.1; }
+    .skill-pill.purple { color: #d97bff; }
+    .skill-pill.purple:hover { background: var(--purple); color: var(--white); }
+    .pxicon { width: 24px; height: 24px; image-rendering: pixelated; }
+
+    /* anim per skill */
+    .skill-pill:nth-child(1) .pxicon { animation: iconBob 1.2s step-end infinite; }
+    .skill-pill:nth-child(2) .pxicon { animation: iconBob 1.5s step-end infinite; }
+    .skill-pill:nth-child(3) .pxicon { animation: iconBob 1.8s step-end infinite; }
+    .skill-pill:nth-child(4) .pxicon { animation: iconSpin 2s step-end infinite; }
+    .skill-pill:nth-child(5) .pxicon { animation: iconBob 1.3s step-end infinite; }
+    .skill-pill:nth-child(6) .pxicon { animation: iconOrbit 2s step-end infinite; }
+    .skill-pill:nth-child(7) .pxicon { animation: iconBob 1.6s step-end infinite; }
+    .skill-pill:nth-child(8) .pxicon { animation: iconPulse 1s step-end infinite; }
+    .skill-pill:nth-child(9) .pxicon { animation: iconBob 1.4s step-end infinite; }
+
+    @keyframes iconBob { 0%,100%{transform:translateY(0);} 50%{transform:translateY(-4px);} }
+    @keyframes iconSpin { 0%{transform:rotate(0deg);} 25%{transform:rotate(90deg);} 50%{transform:rotate(180deg);} 75%{transform:rotate(270deg);} 100%{transform:rotate(360deg);} }
+    @keyframes iconOrbit { 0%,100%{transform:translateX(0);} 50%{transform:translateX(4px);} }
+    @keyframes iconPulse { 0%,100%{transform:scale(1);} 50%{transform:scale(1.15);} }
+
+    .info-row {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 12px 20px; border-bottom: 2px solid rgba(0,229,255,0.08);
+      font-family: 'VT323', monospace; font-size: 1.1rem;
+    }
+    .info-row:last-child { border-bottom: none; }
+    .info-row .key { color: var(--cyan); font-family: 'Press Start 2P', monospace; font-size: 0.45rem; }
+    .info-row .val { color: var(--white); text-align: right; }
+    .info-row .val.av { color: var(--green); }
+
+    /* HEARTS */
+    .hearts { display: inline-flex; gap: 4px; }
+    .heart { width: 16px; height: 16px; image-rendering: pixelated; animation: heartbeat 1.2s step-end infinite; }
+    @keyframes heartbeat { 0%,100%{transform:scale(1);} 50%{transform:scale(1.2);} }
+    .heart:nth-child(2) { animation-delay: 0.2s; }
+    .heart:nth-child(3) { animation-delay: 0.4s; }
+
+    /* ── PROJECTS ── */
+    .projects-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px,1fr)); gap: 20px; }
+    .project-card {
+      text-decoration: none; display: block; background: var(--dark2);
+      border-top: 4px solid #666; border-left: 4px solid #666;
+      border-bottom: 4px solid #111; border-right: 4px solid #111; overflow: hidden;
+    }
+    .project-card:hover {
+      border-top: 4px solid var(--cyan); border-left: 4px solid var(--cyan);
+      border-bottom: 4px solid var(--cyan2); border-right: 4px solid var(--cyan2);
+      transform: translate(-2px,-2px); box-shadow: 4px 4px 0 var(--purple);
+    }
+    .project-preview {
+      height: 100px; background: var(--dark); border-bottom: 4px solid #111;
+      display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden;
+    }
+    .project-preview::before {
+      content: ''; position: absolute; inset: 0;
+      background-image: linear-gradient(rgba(0,229,255,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(0,229,255,0.05) 1px, transparent 1px);
+      background-size: 8px 8px;
+    }
+    .proj-icon-big { image-rendering: pixelated; animation: iconBob 1.2s step-end infinite; }
+    .project-body { padding: 16px 20px; }
+    .project-num { font-family: 'Press Start 2P', monospace; font-size: 0.4rem; color: var(--yellow); margin-bottom: 8px; }
+    .project-title { font-family: 'Press Start 2P', monospace; font-size: 0.65rem; color: var(--white); margin-bottom: 8px; }
+    .project-desc { font-family: 'VT323', monospace; font-size: 1.1rem; color: var(--muted); line-height: 1.6; margin-bottom: 16px; }
+    .project-footer { display: flex; align-items: center; justify-content: space-between; }
+    .project-lang {
+      font-family: 'Press Start 2P', monospace; font-size: 0.38rem; padding: 4px 8px;
+      background: var(--dark); border: 2px solid var(--border); color: var(--cyan);
+    }
+    .project-arrow { color: var(--cyan); font-size: 1.4rem; animation: arrowShift 1s step-end infinite; }
+    @keyframes arrowShift { 0%,100%{transform:translate(0,0);} 50%{transform:translate(4px,-4px);} }
+    .project-card-all {
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      min-height: 200px; text-align: center; gap: 12px;
+      border-style: dashed !important;
+    }
+
+    /* ── CONTACT ── */
+    .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+    .contact-text { font-family: 'VT323', monospace; font-size: 1.2rem; line-height: 1.8; color: var(--muted); }
+    .contact-text p { margin-bottom: 16px; }
+    .contact-links { display: flex; flex-direction: column; gap: 12px; }
+    .contact-item {
+      display: flex; align-items: center; gap: 16px; padding: 14px 18px; background: var(--dark2);
+      border-top: 3px solid #555; border-left: 3px solid #555;
+      border-bottom: 3px solid #111; border-right: 3px solid #111; text-decoration: none;
+    }
+    .contact-item:hover {
+      border-top: 3px solid var(--cyan); border-left: 3px solid var(--cyan);
+      border-bottom: 3px solid var(--cyan2); border-right: 3px solid var(--cyan2);
+      transform: translate(-2px,-2px); box-shadow: 3px 3px 0 var(--purple); background: var(--panel);
+    }
+    .contact-item:hover .contact-icon-wrap svg { animation: iconSpin 0.4s step-end; }
+    .contact-icon-wrap { width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; image-rendering: pixelated; }
+    .contact-info .label { font-family: 'Press Start 2P', monospace; font-size: 0.38rem; letter-spacing: 2px; color: var(--cyan); text-transform: uppercase; margin-bottom: 3px; }
+    .contact-info .value { font-family: 'VT323', monospace; font-size: 1.1rem; color: var(--white); }
+
+    /* ── DIVIDER ── */
+    .divider {
+      position: relative; z-index: 1; height: 4px; margin: 0 40px;
+      background: repeating-linear-gradient(90deg, var(--cyan) 0, var(--cyan) 16px, var(--purple) 16px, var(--purple) 32px, var(--pink) 32px, var(--pink) 48px, var(--yellow) 48px, var(--yellow) 64px, var(--dark) 64px, var(--dark) 80px);
+      animation: dividerScroll 2s linear infinite;
+    }
+    @keyframes dividerScroll { from{background-position:0 0;} to{background-position:80px 0;} }
+
+    /* ── FOOTER ── */
+    footer {
+      position: relative; z-index: 1; background: var(--dark2);
+      border-top: 4px solid var(--cyan); padding: 24px 40px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    footer::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px;
+      background: repeating-linear-gradient(90deg, var(--cyan) 0, var(--cyan) 8px, var(--purple) 8px, var(--purple) 16px);
+    }
+    .footer-logo { font-family: 'Press Start 2P', monospace; font-size: 0.7rem; color: var(--cyan); text-shadow: 2px 2px 0 var(--purple); }
+    .footer-copy { font-family: 'VT323', monospace; font-size: 1.1rem; color: var(--muted); }
+    .footer-links { display: flex; gap: 16px; }
+    .footer-links a { font-family: 'Press Start 2P', monospace; font-size: 0.38rem; color: var(--muted); text-decoration: none; padding: 6px 10px; border: 2px solid transparent; }
+    .footer-links a:hover { color: var(--black); background: var(--cyan); border: 2px solid var(--white); }
+
+    /* COIN */
+    .coin { display: inline-block; animation: coinSpin 1s step-end infinite; font-size: 1.2rem; color: var(--yellow); }
+    @keyframes coinSpin { 0%,100%{transform:scaleX(1);} 25%{transform:scaleX(0.2);} 50%{transform:scaleX(1);} 75%{transform:scaleX(0.2);} }
+
+    /* SCROLL REVEAL */
+    .reveal { opacity: 0; transform: translateY(16px); transition: all 0.3s step-end; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    @keyframes fadeUp { from{opacity:0;transform:translateY(16px);} to{opacity:1;transform:translateY(0);} }
+
+    /* CURSOR TRAIL */
+    .trail { position: fixed; width: 4px; height: 4px; background: var(--cyan); pointer-events: none; z-index: 99998; image-rendering: pixelated; }
+
+    @media (max-width: 768px) {
+      header { padding: 0 12px; }
+      nav a:not(.nav-cta) { display: none; }
+      section { padding: 60px 16px; }
+      .hero-inner { padding: 0 16px; }
+      .sobre-grid, .contact-grid { grid-template-columns: 1fr; }
+      .skills-grid { grid-template-columns: repeat(2,1fr); }
+      .hero-sprite { display: none; }
+      footer { padding: 16px; flex-direction: column; gap: 12px; text-align: center; }
+      .divider { margin: 0 16px; }
+      .header-stats { display: none; }
+    }
+  </style>
+</head>
 <body>
- 
+
 <div class="pixel-bg"></div>
 <div class="stars" id="starsContainer"></div>
 <div class="scanlines"></div>
- 
+
 <!-- ════ HEADER ════ -->
 <header>
   <a href="#inicio" class="logo">JG<span>S</span>neto</a>
@@ -32,11 +463,11 @@
     <a href="#contato" class="nav-cta">Contato</a>
   </nav>
 </header>
- 
+
 <main>
 <!-- ════ HERO ════ -->
 <div id="inicio" style="position:relative;overflow:hidden;">
- 
+
   <!-- pixel hero sprite -->
   <svg class="hero-sprite" viewBox="0 0 24 32" xmlns="http://www.w3.org/2000/svg">
     <rect x="8" y="0" width="8" height="8" fill="#f5c88a"/>
@@ -62,7 +493,7 @@
     <rect x="18" y="10" width="6" height="2" fill="#ffe600"/>
     <rect x="20" y="2" width="2" height="4" fill="#fff"/>
   </svg>
- 
+
   <div class="hero-inner">
     <div class="status-badge">
       <span class="status-dot"></span>
@@ -97,9 +528,9 @@
     </div>
   </div>
 </div>
- 
+
 <div class="divider"></div>
- 
+
 <!-- ════ SOBRE ════ -->
 <section id="sobre">
   <div class="sec-header reveal">
@@ -112,64 +543,64 @@
       <p><span class="menu-arr">▶</span>Stack completo — <strong>Python, Java, Django</strong>, <strong>JavaScript, React, HTML/CSS</strong> e <strong>Node.js</strong>.</p>
       <p><span class="menu-arr">▶</span>Sempre construindo no <span class="hl">GitHub</span>. Corinthians fiel 🖤</p>
       <div class="skills-grid" style="margin-top:24px;">
- 
+
         <!-- Python -->
         <div class="skill-pill" title="Python">
           <svg class="pxicon" viewBox="0 0 16 16"><rect x="4" y="0" width="8" height="1" fill="#4b8bbe"/><rect x="2" y="1" width="10" height="1" fill="#4b8bbe"/><rect x="2" y="2" width="3" height="5" fill="#4b8bbe"/><rect x="5" y="2" width="6" height="3" fill="#4b8bbe"/><rect x="11" y="2" width="3" height="5" fill="#4b8bbe"/><rect x="5" y="5" width="3" height="1" fill="#ffe600"/><rect x="5" y="7" width="6" height="1" fill="#4b8bbe"/><rect x="2" y="8" width="3" height="5" fill="#ffd43b"/><rect x="5" y="9" width="6" height="4" fill="#ffd43b"/><rect x="11" y="8" width="3" height="5" fill="#ffd43b"/><rect x="8" y="8" width="3" height="1" fill="#4b8bbe"/><rect x="2" y="13" width="12" height="1" fill="#ffd43b"/><rect x="4" y="14" width="8" height="1" fill="#ffd43b"/></svg>
           Python
         </div>
- 
+
         <!-- Java -->
         <div class="skill-pill" title="Java">
           <svg class="pxicon" viewBox="0 0 16 16"><rect x="4" y="1" width="2" height="5" fill="#e76f00"/><rect x="6" y="0" width="4" height="1" fill="#e76f00"/><rect x="10" y="1" width="2" height="3" fill="#e76f00"/><rect x="8" y="4" width="2" height="2" fill="#e76f00"/><rect x="6" y="5" width="2" height="1" fill="#e76f00"/><rect x="3" y="8" width="10" height="2" fill="#5382a1"/><rect x="4" y="10" width="8" height="1" fill="#5382a1"/><rect x="5" y="11" width="6" height="1" fill="#5382a1"/><rect x="4" y="13" width="3" height="2" fill="#5382a1"/><rect x="9" y="13" width="3" height="2" fill="#5382a1"/></svg>
           Java
         </div>
- 
+
         <!-- JS -->
         <div class="skill-pill" title="JavaScript">
           <svg class="pxicon" viewBox="0 0 16 16"><rect x="0" y="0" width="16" height="16" fill="#ffe600"/><rect x="9" y="3" width="3" height="7" fill="#1a1a1a"/><rect x="9" y="10" width="5" height="2" fill="#1a1a1a"/><rect x="6" y="12" width="2" height="2" fill="#1a1a1a"/><rect x="2" y="3" width="4" height="10" fill="#1a1a1a"/><rect x="6" y="3" width="2" height="2" fill="#1a1a1a"/></svg>
           JS
         </div>
- 
+
         <!-- Django -->
         <div class="skill-pill purple" title="Django">
           <svg class="pxicon" viewBox="0 0 16 16"><rect x="3" y="0" width="3" height="16" fill="#44b78b"/><rect x="6" y="0" width="7" height="3" fill="#44b78b"/><rect x="6" y="6" width="5" height="3" fill="#44b78b"/><rect x="6" y="12" width="4" height="4" fill="#44b78b"/><rect x="10" y="14" width="3" height="2" fill="#44b78b"/></svg>
           Django
         </div>
- 
+
         <!-- Node -->
         <div class="skill-pill purple" title="Node.js">
           <svg class="pxicon" viewBox="0 0 16 16"><rect x="6" y="0" width="4" height="2" fill="#3d8b3d"/><rect x="4" y="2" width="8" height="2" fill="#3d8b3d"/><rect x="2" y="4" width="12" height="8" fill="#68a063"/><rect x="4" y="5" width="2" height="6" fill="#3d8b3d"/><rect x="7" y="5" width="2" height="3" fill="#3d8b3d"/><rect x="7" y="8" width="5" height="2" fill="#3d8b3d"/><rect x="4" y="12" width="8" height="2" fill="#68a063"/><rect x="6" y="14" width="4" height="2" fill="#3d8b3d"/></svg>
           Node.js
         </div>
- 
+
         <!-- React -->
         <div class="skill-pill" title="React">
           <svg class="pxicon" viewBox="0 0 16 16"><rect x="7" y="7" width="2" height="2" fill="#61dafb"/><rect x="6" y="0" width="4" height="2" fill="#61dafb"/><rect x="4" y="2" width="8" height="1" fill="#61dafb"/><rect x="2" y="3" width="12" height="1" fill="#61dafb"/><rect x="1" y="4" width="14" height="1" fill="#61dafb"/><rect x="1" y="11" width="14" height="1" fill="#61dafb"/><rect x="2" y="12" width="12" height="1" fill="#61dafb"/><rect x="4" y="13" width="8" height="1" fill="#61dafb"/><rect x="6" y="14" width="4" height="2" fill="#61dafb"/><rect x="0" y="6" width="2" height="4" fill="#61dafb"/><rect x="14" y="6" width="2" height="4" fill="#61dafb"/></svg>
           React
         </div>
- 
+
         <!-- HTML -->
         <div class="skill-pill purple" title="HTML/CSS">
           <svg class="pxicon" viewBox="0 0 16 16"><rect x="2" y="0" width="12" height="2" fill="#e34c26"/><rect x="3" y="2" width="10" height="2" fill="#e34c26"/><rect x="4" y="4" width="8" height="2" fill="#f06529"/><rect x="5" y="6" width="6" height="2" fill="#f06529"/><rect x="4" y="8" width="3" height="6" fill="#fff"/><rect x="9" y="8" width="3" height="6" fill="#fff"/><rect x="4" y="12" width="8" height="2" fill="#fff"/></svg>
           HTML/CSS
         </div>
- 
+
         <!-- SQL -->
         <div class="skill-pill" title="SQL">
           <svg class="pxicon" viewBox="0 0 16 16"><rect x="2" y="1" width="12" height="4" fill="#00b8d9"/><rect x="2" y="1" width="12" height="1" fill="#00e5ff"/><rect x="1" y="5" width="14" height="1" fill="#00b8d9"/><rect x="2" y="6" width="12" height="3" fill="#004d5e"/><rect x="1" y="9" width="14" height="1" fill="#00b8d9"/><rect x="2" y="10" width="12" height="3" fill="#004d5e"/><rect x="1" y="13" width="14" height="1" fill="#00b8d9"/><rect x="2" y="14" width="12" height="1" fill="#004d5e"/></svg>
           SQL
         </div>
- 
+
         <!-- Git -->
         <div class="skill-pill purple" title="Git">
           <svg class="pxicon" viewBox="0 0 16 16"><rect x="7" y="0" width="2" height="3" fill="#f05032"/><rect x="7" y="7" width="2" height="2" fill="#f05032"/><rect x="7" y="13" width="2" height="3" fill="#f05032"/><rect x="5" y="3" width="6" height="2" fill="#f05032"/><rect x="3" y="5" width="2" height="2" fill="#f05032"/><rect x="11" y="5" width="2" height="2" fill="#f05032"/><rect x="5" y="9" width="2" height="4" fill="#f05032"/><rect x="5" y="12" width="4" height="1" fill="#f05032"/></svg>
           Git
         </div>
- 
+
       </div>
     </div>
- 
+
     <!-- INFO CARD -->
     <div class="reveal">
       <div class="pixel-window">
@@ -187,7 +618,7 @@
           <div class="info-row"><span class="key">// STATUS</span><span class="val av">● DISPONÍVEL</span></div>
         </div>
       </div>
- 
+
       <div style="margin-top:16px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
         <span style="font-family:'Press Start 2P',monospace;font-size:0.4rem;color:var(--muted);">VIDA:</span>
         <div class="hearts">
@@ -203,9 +634,9 @@
     </div>
   </div>
 </section>
- 
+
 <div class="divider"></div>
- 
+
 <!-- ════ PROJETOS ════ -->
 <section id="projetos">
   <div class="sec-header reveal">
@@ -213,7 +644,7 @@
     <h2 class="sec-title glitch" data-text="MEUS PROJETOS">MEUS <span>PROJETOS</span></h2>
   </div>
   <div class="projects-grid">
- 
+
     <!-- SIGE -->
     <a href="https://github.com/JGuilhermeSneto/SIGE" target="_blank" class="project-card reveal">
       <div class="project-preview">
@@ -233,7 +664,7 @@
         <div class="project-footer"><span class="project-lang">Python / HTML</span><span class="project-arrow">↗</span></div>
       </div>
     </a>
- 
+
     <!-- Java -->
     <a href="https://github.com/JGuilhermeSneto/Repo_Java" target="_blank" class="project-card reveal">
       <div class="project-preview">
@@ -252,7 +683,7 @@
         <div class="project-footer"><span class="project-lang">Java</span><span class="project-arrow">↗</span></div>
       </div>
     </a>
- 
+
     <!-- Biblioteca -->
     <a href="https://github.com/Suanderson/BibliotecaPessoal" target="_blank" class="project-card reveal">
       <div class="project-preview">
@@ -271,7 +702,7 @@
         <div class="project-footer"><span class="project-lang">Python / React</span><span class="project-arrow">↗</span></div>
       </div>
     </a>
- 
+
     <!-- Ver todos -->
     <a href="https://github.com/JGuilhermeSneto" target="_blank" class="project-card project-card-all reveal">
       <!-- pixel GitHub icon big -->
@@ -288,12 +719,12 @@
       <span style="font-family:'Press Start 2P',monospace;font-size:0.42rem;color:var(--muted);letter-spacing:2px;">VER TODOS</span>
       <span style="font-family:'Press Start 2P',monospace;font-size:0.65rem;color:var(--cyan);">GITHUB →</span>
     </a>
- 
+
   </div>
 </section>
- 
+
 <div class="divider"></div>
- 
+
 <!-- ════ CONTATO ════ -->
 <section id="contato">
   <div class="sec-header reveal">
@@ -309,7 +740,7 @@
       </p>
     </div>
     <div class="contact-links reveal">
- 
+
       <!-- Email -->
       <a href="mailto:jguilhermesneto.dev@gmail.com" class="contact-item">
         <div class="contact-icon-wrap">
@@ -329,7 +760,7 @@
         </div>
         <div class="contact-info"><p class="label">E-mail</p><p class="value">jguilhermesneto.dev@gmail.com</p></div>
       </a>
- 
+
       <!-- GitHub -->
       <a href="https://github.com/JGuilhermeSneto" target="_blank" class="contact-item">
         <div class="contact-icon-wrap">
@@ -346,7 +777,7 @@
         </div>
         <div class="contact-info"><p class="label">GitHub</p><p class="value">JGuilhermeSneto</p></div>
       </a>
- 
+
       <!-- Instagram -->
       <a href="https://www.instagram.com/o_jguilherme/" target="_blank" class="contact-item">
         <div class="contact-icon-wrap">
@@ -360,7 +791,7 @@
         </div>
         <div class="contact-info"><p class="label">Instagram</p><p class="value">@o_jguilherme</p></div>
       </a>
- 
+
       <!-- LinkedIn -->
       <a href="https://www.linkedin.com/in/josé-guilherme-5328a6290" target="_blank" class="contact-item">
         <div class="contact-icon-wrap">
@@ -373,11 +804,11 @@
         </div>
         <div class="contact-info"><p class="label">LinkedIn</p><p class="value">José Guilherme</p></div>
       </a>
- 
+
     </div>
   </div>
 </section>
- 
+
 <!-- ════ FOOTER ════ -->
 <footer>
   <span class="footer-logo">JGSneto</span>
@@ -388,6 +819,50 @@
 </footer>
 </main>
 
+<script>
+  // STARS
+  const sc = document.getElementById('starsContainer');
+  for(let i=0;i<80;i++){
+    const s=document.createElement('span');
+    s.style.left=Math.random()*100+'%';
+    s.style.top=Math.random()*100+'%';
+    s.style.animationDelay=(Math.random()*3)+'s';
+    s.style.animationDuration=(1.5+Math.random()*3)+'s';
+    if(Math.random()>.7) s.style.background='#bf00ff';
+    if(Math.random()>.85){ s.style.background='#ffe600'; s.style.width='2px'; s.style.height='2px'; }
+    sc.appendChild(s);
+  }
+
+  // SCROLL REVEAL
+  const obs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');}),{threshold:0.1});
+  document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+
+  // XP BAR tick
+  const xp=document.getElementById('xpBar');
+  let t=0;
+  setInterval(()=>{t=(t+1)%3; xp.style.width=['65%','68%','65%'][t];},700);
+
+  // CURSOR TRAIL
+  document.addEventListener('mousemove',e=>{
+    const d=document.createElement('div');
+    d.className='trail';
+    d.style.left=e.clientX+'px';
+    d.style.top=e.clientY+'px';
+    document.body.appendChild(d);
+    setTimeout(()=>{d.style.opacity='0';d.style.transition='opacity 0.2s step-end';setTimeout(()=>d.remove(),200);},80);
+  });
+
+  // KONAMI
+  const k=[38,38,40,40,37,39,37,39,66,65];
+  let p=0;
+  document.addEventListener('keydown',e=>{
+    if(e.keyCode===k[p])p++; else p=0;
+    if(p===k.length){
+      document.body.style.filter='hue-rotate(180deg)';
+      setTimeout(()=>document.body.style.filter='',2000);
+      p=0;
+    }
+  });
+</script>
 </body>
 </html>
-<script src="script.js"></script>
