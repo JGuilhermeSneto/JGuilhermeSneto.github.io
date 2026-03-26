@@ -1,20 +1,22 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>JGuilherme | Dev</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="index.css">
-</head>
 <body>
-
-<div class="grid-bg"></div>
-
-<!-- HEADER -->
+ 
+<div class="pixel-bg"></div>
+<div class="stars" id="starsContainer"></div>
+<div class="scanlines"></div>
+ 
+<!-- ════ HEADER ════ -->
 <header>
   <a href="#inicio" class="logo">JG<span>S</span>neto</a>
+  <div class="header-stats">
+    <div class="stat-bar">
+      <span class="stat-label" style="color:#ff5555;">HP</span>
+      <div class="bar-track"><div class="bar-fill hp"></div></div>
+    </div>
+    <div class="stat-bar">
+      <span class="stat-label" style="color:var(--yellow);">XP</span>
+      <div class="bar-track"><div class="bar-fill xp" id="xpBar"></div></div>
+    </div>
+  </div>
   <nav>
     <a href="#inicio">Início</a>
     <a href="#sobre">Sobre</a>
@@ -22,244 +24,358 @@
     <a href="#contato" class="nav-cta">Contato</a>
   </nav>
 </header>
-
-<!-- HERO -->
-<div id="inicio" style="position:relative; overflow:hidden;">
-  <div class="hero-glow"></div>
-  <div class="hero-glow2"></div>
+ 
+<main>
+<!-- ════ HERO ════ -->
+<div id="inicio" style="position:relative;overflow:hidden;">
+ 
+  <!-- pixel hero sprite -->
+  <svg class="hero-sprite" viewBox="0 0 24 32" xmlns="http://www.w3.org/2000/svg">
+    <rect x="8" y="0" width="8" height="8" fill="#f5c88a"/>
+    <rect x="8" y="0" width="8" height="2" fill="#3a2000"/>
+    <rect x="6" y="2" width="2" height="2" fill="#3a2000"/>
+    <rect x="16" y="2" width="2" height="2" fill="#3a2000"/>
+    <rect x="10" y="3" width="2" height="2" fill="#00e5ff"/>
+    <rect x="14" y="3" width="2" height="2" fill="#00e5ff"/>
+    <rect x="11" y="6" width="4" height="1" fill="#3a2000"/>
+    <rect x="7" y="8" width="10" height="10" fill="#bf00ff"/>
+    <rect x="9" y="9" width="6" height="2" fill="#df9fff"/>
+    <rect x="7" y="16" width="10" height="2" fill="#3a2000"/>
+    <rect x="11" y="16" width="2" height="2" fill="#ffe600"/>
+    <rect x="4" y="8" width="3" height="7" fill="#f5c88a"/>
+    <rect x="17" y="8" width="3" height="7" fill="#f5c88a"/>
+    <rect x="4" y="15" width="3" height="3" fill="#f5c88a"/>
+    <rect x="17" y="15" width="3" height="3" fill="#f5c88a"/>
+    <rect x="7" y="18" width="4" height="8" fill="#1a1a40"/>
+    <rect x="13" y="18" width="4" height="8" fill="#1a1a40"/>
+    <rect x="6" y="26" width="5" height="3" fill="#00e5ff"/>
+    <rect x="13" y="26" width="5" height="3" fill="#00e5ff"/>
+    <rect x="20" y="4" width="2" height="14" fill="#aaa"/>
+    <rect x="18" y="10" width="6" height="2" fill="#ffe600"/>
+    <rect x="20" y="2" width="2" height="4" fill="#fff"/>
+  </svg>
+ 
   <div class="hero-inner">
     <div class="status-badge">
       <span class="status-dot"></span>
       ONLINE — SEMPRE CONSTRUINDO
     </div>
-    <p class="hero-tag">Full Stack Developer</p>
-    <h1 class="hero-name">José Guilherme<br>da S. Neto</h1>
-    <p class="hero-role">// DESENVOLVEDOR WEB</p>
-    <p class="hero-desc">
-      Estudante de <strong>Tecnologias para Sistemas da Internet</strong> no
-      <strong>IFRN — Campus Canguaretama</strong>. Apaixonado por construir sistemas e interfaces do zero.
-    </p>
-    <div class="hero-btns">
-      <a href="#projetos" class="btn-primary">Ver Projetos</a>
-      <a href="#contato" class="btn-secondary">Entre em Contato</a>
+    <div class="level-display">
+      <span>LVL</span><span class="level-num">05</span><span>FULL STACK DEVELOPER</span>
     </div>
-
-    <div class="terminal">
-      <div class="terminal-bar">
-        <span class="dot r"></span>
-        <span class="dot y"></span>
-        <span class="dot g"></span>
-        <span class="t-label">bash ~ jgsneto</span>
+    <p class="pixel-tag">PLAYER 1 — SELECT SCREEN</p>
+    <h1 class="hero-name"><span class="nc">José Guilherme</span><br>da S. Neto</h1>
+    <p class="hero-role">// DESENVOLVEDOR WEB</p>
+    <p class="hero-desc">Estudante de <strong>TSI</strong> no <strong>IFRN — Canguaretama</strong>.<br>Apaixonado por construir sistemas do zero.</p>
+    <div class="hero-btns">
+      <a href="#projetos" class="pixel-btn pixel-btn-primary">▶ Ver Projetos</a>
+      <a href="#contato" class="pixel-btn pixel-btn-secondary">◉ Contato</a>
+    </div>
+    <div class="dialog-box">
+      <div class="dialog-title">
+        <svg width="14" height="14" viewBox="0 0 8 8" style="image-rendering:pixelated">
+          <rect x="2" y="0" width="4" height="1" fill="#00e5ff"/><rect x="1" y="1" width="6" height="1" fill="#00e5ff"/>
+          <rect x="0" y="2" width="8" height="4" fill="#00e5ff"/><rect x="1" y="6" width="6" height="1" fill="#00e5ff"/>
+          <rect x="2" y="7" width="4" height="1" fill="#00e5ff"/>
+        </svg>
+        HERO_STATS.DAT
+        <span class="dialog-arrow">▼</span>
       </div>
-      <div class="t-line"><span class="t-key">name</span><span style="color:var(--muted)">:</span><span class="t-val">&nbsp;&nbsp;&nbsp;&nbsp;José Guilherme da S. Neto</span></div>
-      <div class="t-line"><span class="t-key">role</span><span style="color:var(--muted)">:</span><span class="t-val">&nbsp;&nbsp;&nbsp;&nbsp;Full Stack Developer</span></div>
-      <div class="t-line"><span class="t-key">school</span><span style="color:var(--muted)">:</span><span class="t-val purple">&nbsp;&nbsp;IFRN – Canguaretama</span></div>
-      <div class="t-line"><span class="t-key">period</span><span style="color:var(--muted)">:</span><span class="t-val">&nbsp;&nbsp;5° período</span></div>
-      <div class="t-line"><span class="t-key">status</span><span style="color:var(--muted)">:</span><span class="t-val green">&nbsp;&nbsp;[ ONLINE ] always building</span><span class="cursor"></span></div>
+      <div class="dialog-line"><span class="key">NAME  :</span> José Guilherme da S. Neto</div>
+      <div class="dialog-line"><span class="key">CLASS :</span> <span class="vp">Full Stack Dev</span></div>
+      <div class="dialog-line"><span class="key">SCHOOL:</span> IFRN – Canguaretama</div>
+      <div class="dialog-line"><span class="key">PERIOD:</span> <span class="vy">5° período</span></div>
+      <div class="dialog-line"><span class="key">STATUS:</span> <span class="vg">● ONLINE — always building</span></div>
     </div>
   </div>
 </div>
-
-<!-- SOBRE -->
+ 
+<div class="divider"></div>
+ 
+<!-- ════ SOBRE ════ -->
 <section id="sobre">
   <div class="sec-header reveal">
-    <p class="sec-tag">01 — Sobre mim</p>
-    <h2 class="sec-title">Quem <span>sou</span> eu?</h2>
+    <p class="sec-tag">01 — SOBRE MIM</p>
+    <h2 class="sec-title glitch" data-text="QUEM SOU EU?">QUEM <span>SOU</span> EU?</h2>
   </div>
-
   <div class="sobre-grid">
     <div class="sobre-text reveal">
-      <p>
-        Olá! Sou <strong>José Guilherme</strong>, desenvolvedor web e estudante no
-        <span class="highlight">IFRN – Campus Canguaretama</span>, cursando
-        Tecnologias para Sistemas da Internet no 5° período.
-      </p>
-      <p>
-        Trabalho com o stack completo — backend com <strong>Python, Java e Django</strong>,
-        frontend com <strong>JavaScript, React e HTML/CSS</strong>, e ferramentas como <strong>Node.js</strong>.
-        Gosto de criar sistemas funcionais e bem estruturados.
-      </p>
-      <p>
-        Sempre em modo de construção, explorando novas tecnologias e contribuindo com projetos
-        no <span class="highlight">GitHub</span>. Torcedor fiel do
-        <strong>Corinthians 🖤</strong>
-      </p>
-
-      <div class="skills-grid" style="margin-top: 32px;">
-        <span class="skill-pill"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg" class="skill-icon"> Python</span>
-        <span class="skill-pill"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/java/java-original.svg" class="skill-icon"> Java</span>
-        <span class="skill-pill"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg" class="skill-icon"> JavaScript</span>
-        <span class="skill-pill purple"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/django/django-plain.svg" class="skill-icon" style="filter:brightness(2)"> Django</span>
-        <span class="skill-pill purple"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg" class="skill-icon"> Node.js</span>
-        <span class="skill-pill"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg" class="skill-icon"> React</span>
-        <span class="skill-pill purple"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg" class="skill-icon"> HTML/CSS</span>
-        <span class="skill-pill"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original.svg" class="skill-icon"> SQL</span>
-        <span class="skill-pill purple"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg" class="skill-icon"> Git</span>
+      <p><span class="menu-arr">▶</span>Olá! Sou <strong>José Guilherme</strong>, dev web no <span class="hl">IFRN – Canguaretama</span>, TSI 5° período.</p>
+      <p><span class="menu-arr">▶</span>Stack completo — <strong>Python, Java, Django</strong>, <strong>JavaScript, React, HTML/CSS</strong> e <strong>Node.js</strong>.</p>
+      <p><span class="menu-arr">▶</span>Sempre construindo no <span class="hl">GitHub</span>. Corinthians fiel 🖤</p>
+      <div class="skills-grid" style="margin-top:24px;">
+ 
+        <!-- Python -->
+        <div class="skill-pill" title="Python">
+          <svg class="pxicon" viewBox="0 0 16 16"><rect x="4" y="0" width="8" height="1" fill="#4b8bbe"/><rect x="2" y="1" width="10" height="1" fill="#4b8bbe"/><rect x="2" y="2" width="3" height="5" fill="#4b8bbe"/><rect x="5" y="2" width="6" height="3" fill="#4b8bbe"/><rect x="11" y="2" width="3" height="5" fill="#4b8bbe"/><rect x="5" y="5" width="3" height="1" fill="#ffe600"/><rect x="5" y="7" width="6" height="1" fill="#4b8bbe"/><rect x="2" y="8" width="3" height="5" fill="#ffd43b"/><rect x="5" y="9" width="6" height="4" fill="#ffd43b"/><rect x="11" y="8" width="3" height="5" fill="#ffd43b"/><rect x="8" y="8" width="3" height="1" fill="#4b8bbe"/><rect x="2" y="13" width="12" height="1" fill="#ffd43b"/><rect x="4" y="14" width="8" height="1" fill="#ffd43b"/></svg>
+          Python
+        </div>
+ 
+        <!-- Java -->
+        <div class="skill-pill" title="Java">
+          <svg class="pxicon" viewBox="0 0 16 16"><rect x="4" y="1" width="2" height="5" fill="#e76f00"/><rect x="6" y="0" width="4" height="1" fill="#e76f00"/><rect x="10" y="1" width="2" height="3" fill="#e76f00"/><rect x="8" y="4" width="2" height="2" fill="#e76f00"/><rect x="6" y="5" width="2" height="1" fill="#e76f00"/><rect x="3" y="8" width="10" height="2" fill="#5382a1"/><rect x="4" y="10" width="8" height="1" fill="#5382a1"/><rect x="5" y="11" width="6" height="1" fill="#5382a1"/><rect x="4" y="13" width="3" height="2" fill="#5382a1"/><rect x="9" y="13" width="3" height="2" fill="#5382a1"/></svg>
+          Java
+        </div>
+ 
+        <!-- JS -->
+        <div class="skill-pill" title="JavaScript">
+          <svg class="pxicon" viewBox="0 0 16 16"><rect x="0" y="0" width="16" height="16" fill="#ffe600"/><rect x="9" y="3" width="3" height="7" fill="#1a1a1a"/><rect x="9" y="10" width="5" height="2" fill="#1a1a1a"/><rect x="6" y="12" width="2" height="2" fill="#1a1a1a"/><rect x="2" y="3" width="4" height="10" fill="#1a1a1a"/><rect x="6" y="3" width="2" height="2" fill="#1a1a1a"/></svg>
+          JS
+        </div>
+ 
+        <!-- Django -->
+        <div class="skill-pill purple" title="Django">
+          <svg class="pxicon" viewBox="0 0 16 16"><rect x="3" y="0" width="3" height="16" fill="#44b78b"/><rect x="6" y="0" width="7" height="3" fill="#44b78b"/><rect x="6" y="6" width="5" height="3" fill="#44b78b"/><rect x="6" y="12" width="4" height="4" fill="#44b78b"/><rect x="10" y="14" width="3" height="2" fill="#44b78b"/></svg>
+          Django
+        </div>
+ 
+        <!-- Node -->
+        <div class="skill-pill purple" title="Node.js">
+          <svg class="pxicon" viewBox="0 0 16 16"><rect x="6" y="0" width="4" height="2" fill="#3d8b3d"/><rect x="4" y="2" width="8" height="2" fill="#3d8b3d"/><rect x="2" y="4" width="12" height="8" fill="#68a063"/><rect x="4" y="5" width="2" height="6" fill="#3d8b3d"/><rect x="7" y="5" width="2" height="3" fill="#3d8b3d"/><rect x="7" y="8" width="5" height="2" fill="#3d8b3d"/><rect x="4" y="12" width="8" height="2" fill="#68a063"/><rect x="6" y="14" width="4" height="2" fill="#3d8b3d"/></svg>
+          Node.js
+        </div>
+ 
+        <!-- React -->
+        <div class="skill-pill" title="React">
+          <svg class="pxicon" viewBox="0 0 16 16"><rect x="7" y="7" width="2" height="2" fill="#61dafb"/><rect x="6" y="0" width="4" height="2" fill="#61dafb"/><rect x="4" y="2" width="8" height="1" fill="#61dafb"/><rect x="2" y="3" width="12" height="1" fill="#61dafb"/><rect x="1" y="4" width="14" height="1" fill="#61dafb"/><rect x="1" y="11" width="14" height="1" fill="#61dafb"/><rect x="2" y="12" width="12" height="1" fill="#61dafb"/><rect x="4" y="13" width="8" height="1" fill="#61dafb"/><rect x="6" y="14" width="4" height="2" fill="#61dafb"/><rect x="0" y="6" width="2" height="4" fill="#61dafb"/><rect x="14" y="6" width="2" height="4" fill="#61dafb"/></svg>
+          React
+        </div>
+ 
+        <!-- HTML -->
+        <div class="skill-pill purple" title="HTML/CSS">
+          <svg class="pxicon" viewBox="0 0 16 16"><rect x="2" y="0" width="12" height="2" fill="#e34c26"/><rect x="3" y="2" width="10" height="2" fill="#e34c26"/><rect x="4" y="4" width="8" height="2" fill="#f06529"/><rect x="5" y="6" width="6" height="2" fill="#f06529"/><rect x="4" y="8" width="3" height="6" fill="#fff"/><rect x="9" y="8" width="3" height="6" fill="#fff"/><rect x="4" y="12" width="8" height="2" fill="#fff"/></svg>
+          HTML/CSS
+        </div>
+ 
+        <!-- SQL -->
+        <div class="skill-pill" title="SQL">
+          <svg class="pxicon" viewBox="0 0 16 16"><rect x="2" y="1" width="12" height="4" fill="#00b8d9"/><rect x="2" y="1" width="12" height="1" fill="#00e5ff"/><rect x="1" y="5" width="14" height="1" fill="#00b8d9"/><rect x="2" y="6" width="12" height="3" fill="#004d5e"/><rect x="1" y="9" width="14" height="1" fill="#00b8d9"/><rect x="2" y="10" width="12" height="3" fill="#004d5e"/><rect x="1" y="13" width="14" height="1" fill="#00b8d9"/><rect x="2" y="14" width="12" height="1" fill="#004d5e"/></svg>
+          SQL
+        </div>
+ 
+        <!-- Git -->
+        <div class="skill-pill purple" title="Git">
+          <svg class="pxicon" viewBox="0 0 16 16"><rect x="7" y="0" width="2" height="3" fill="#f05032"/><rect x="7" y="7" width="2" height="2" fill="#f05032"/><rect x="7" y="13" width="2" height="3" fill="#f05032"/><rect x="5" y="3" width="6" height="2" fill="#f05032"/><rect x="3" y="5" width="2" height="2" fill="#f05032"/><rect x="11" y="5" width="2" height="2" fill="#f05032"/><rect x="5" y="9" width="2" height="4" fill="#f05032"/><rect x="5" y="12" width="4" height="1" fill="#f05032"/></svg>
+          Git
+        </div>
+ 
       </div>
     </div>
-
-    <div class="info-card reveal">
-      <div class="info-row">
-        <span class="key">// NOME</span>
-        <span class="val">José Guilherme</span>
+ 
+    <!-- INFO CARD -->
+    <div class="reveal">
+      <div class="pixel-window">
+        <div class="window-titlebar">
+          <span class="win-title">PLAYER_INFO.DAT</span>
+          <div class="win-btns"><div class="win-btn r"></div><div class="win-btn y"></div><div class="win-btn g"></div></div>
+        </div>
+        <div style="padding:4px 0;">
+          <div class="info-row"><span class="key">// NOME</span><span class="val">José Guilherme</span></div>
+          <div class="info-row"><span class="key">// CURSO</span><span class="val">TSI – IFRN</span></div>
+          <div class="info-row"><span class="key">// PERÍODO</span><span class="val">5° Período</span></div>
+          <div class="info-row"><span class="key">// STACK</span><span class="val">Full Stack</span></div>
+          <div class="info-row"><span class="key">// GITHUB</span><span class="val">JGuilhermeSneto</span></div>
+          <div class="info-row"><span class="key">// INSTAGRAM</span><span class="val">@o_jguilherme</span></div>
+          <div class="info-row"><span class="key">// STATUS</span><span class="val av">● DISPONÍVEL</span></div>
+        </div>
       </div>
-      <div class="info-row">
-        <span class="key">// CURSO</span>
-        <span class="val">TSI – IFRN</span>
-      </div>
-      <div class="info-row">
-        <span class="key">// PERÍODO</span>
-        <span class="val">5° Período</span>
-      </div>
-      <div class="info-row">
-        <span class="key">// STACK</span>
-        <span class="val">Full Stack</span>
-      </div>
-      <div class="info-row">
-        <span class="key">// GITHUB</span>
-        <span class="val">JGuilhermeSneto</span>
-      </div>
-      <div class="info-row">
-        <span class="key">// INSTAGRAM</span>
-        <span class="val">@o_jguilherme</span>
-      </div>
-      <div class="info-row">
-        <span class="key">// STATUS</span>
-        <span class="val" style="color:#00ff88;">● DISPONÍVEL</span>
+ 
+      <div style="margin-top:16px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+        <span style="font-family:'Press Start 2P',monospace;font-size:0.4rem;color:var(--muted);">VIDA:</span>
+        <div class="hearts">
+          <svg class="heart" viewBox="0 0 8 8"><rect x="1" y="1" width="2" height="1" fill="#ff0000"/><rect x="5" y="1" width="2" height="1" fill="#ff0000"/><rect x="0" y="2" width="4" height="2" fill="#ff0000"/><rect x="4" y="2" width="4" height="2" fill="#ff0000"/><rect x="1" y="4" width="6" height="2" fill="#ff0000"/><rect x="2" y="6" width="4" height="1" fill="#ff0000"/><rect x="3" y="7" width="2" height="1" fill="#ff0000"/></svg>
+          <svg class="heart" viewBox="0 0 8 8"><rect x="1" y="1" width="2" height="1" fill="#ff0000"/><rect x="5" y="1" width="2" height="1" fill="#ff0000"/><rect x="0" y="2" width="4" height="2" fill="#ff0000"/><rect x="4" y="2" width="4" height="2" fill="#ff0000"/><rect x="1" y="4" width="6" height="2" fill="#ff0000"/><rect x="2" y="6" width="4" height="1" fill="#ff0000"/><rect x="3" y="7" width="2" height="1" fill="#ff0000"/></svg>
+          <svg class="heart" viewBox="0 0 8 8"><rect x="1" y="1" width="2" height="1" fill="#ff0000"/><rect x="5" y="1" width="2" height="1" fill="#ff0000"/><rect x="0" y="2" width="4" height="2" fill="#ff0000"/><rect x="4" y="2" width="4" height="2" fill="#ff0000"/><rect x="1" y="4" width="6" height="2" fill="#ff0000"/><rect x="2" y="6" width="4" height="1" fill="#ff0000"/><rect x="3" y="7" width="2" height="1" fill="#ff0000"/></svg>
+        </div>
+        <span style="font-family:'Press Start 2P',monospace;font-size:0.4rem;color:var(--muted);margin-left:8px;">MANA:</span>
+        <svg width="16" height="16" viewBox="0 0 8 8" style="animation:iconBob 1s step-end infinite;image-rendering:pixelated"><rect x="3" y="0" width="2" height="2" fill="#00e5ff"/><rect x="1" y="2" width="6" height="2" fill="#00e5ff"/><rect x="0" y="4" width="8" height="2" fill="#00b8d9"/><rect x="1" y="6" width="6" height="1" fill="#00b8d9"/><rect x="3" y="7" width="2" height="1" fill="#007799"/></svg>
+        <svg width="16" height="16" viewBox="0 0 8 8" style="animation:iconBob 1s 0.2s step-end infinite;image-rendering:pixelated"><rect x="3" y="0" width="2" height="2" fill="#00e5ff"/><rect x="1" y="2" width="6" height="2" fill="#00e5ff"/><rect x="0" y="4" width="8" height="2" fill="#00b8d9"/><rect x="1" y="6" width="6" height="1" fill="#00b8d9"/><rect x="3" y="7" width="2" height="1" fill="#007799"/></svg>
+        <svg width="16" height="16" viewBox="0 0 8 8" style="animation:iconBob 1s 0.4s step-end infinite;image-rendering:pixelated"><rect x="3" y="0" width="2" height="2" fill="#333"/><rect x="1" y="2" width="6" height="2" fill="#333"/><rect x="0" y="4" width="8" height="2" fill="#222"/><rect x="1" y="6" width="6" height="1" fill="#222"/><rect x="3" y="7" width="2" height="1" fill="#111"/></svg>
       </div>
     </div>
   </div>
 </section>
-
+ 
 <div class="divider"></div>
-
-<!-- PROJETOS -->
+ 
+<!-- ════ PROJETOS ════ -->
 <section id="projetos">
   <div class="sec-header reveal">
-    <p class="sec-tag">02 — Projetos</p>
-    <h2 class="sec-title">Meus <span>Projetos</span></h2>
+    <p class="sec-tag">02 — PROJETOS</p>
+    <h2 class="sec-title glitch" data-text="MEUS PROJETOS">MEUS <span>PROJETOS</span></h2>
   </div>
-
   <div class="projects-grid">
-
+ 
+    <!-- SIGE -->
     <a href="https://github.com/JGuilhermeSneto/SIGE" target="_blank" class="project-card reveal">
-      <p class="project-num">// 001</p>
-      <h3 class="project-title">SIGE</h3>
-      <p class="project-desc">Sistema Interno de Gerenciamento Escolar — projeto integrador desenvolvido no 4° período do curso de TSI.</p>
-      <div class="project-footer">
-        <span class="project-lang">Python / HTML</span>
-        <span class="project-arrow">↗</span>
+      <div class="project-preview">
+        <svg class="proj-icon-big" width="80" height="64" viewBox="0 0 20 16" style="image-rendering:pixelated;">
+          <rect x="4" y="6" width="12" height="10" fill="#4a4a8a"/><rect x="3" y="5" width="14" height="3" fill="#6a6aaa"/>
+          <rect x="6" y="0" width="8" height="5" fill="#6a6aaa"/><rect x="8" y="0" width="4" height="1" fill="#ffe600"/>
+          <rect x="7" y="9" width="3" height="7" fill="#8a7a00"/><rect x="12" y="9" width="3" height="4" fill="#00b8d9"/>
+          <rect x="0" y="14" width="20" height="2" fill="#3a3a5a"/>
+          <rect x="5" y="8" width="2" height="2" fill="#00e5ff"/><rect x="14" y="8" width="2" height="2" fill="#00e5ff"/>
+          <rect x="9" y="0" width="1" height="4" fill="#888"/><rect x="10" y="0" width="3" height="2" fill="#ff0000"/>
+        </svg>
+      </div>
+      <div class="project-body">
+        <p class="project-num">// QUEST 001</p>
+        <h3 class="project-title">SIGE</h3>
+        <p class="project-desc">Sistema Interno de Gerenciamento Escolar — projeto integrador do 4° período.</p>
+        <div class="project-footer"><span class="project-lang">Python / HTML</span><span class="project-arrow">↗</span></div>
       </div>
     </a>
-
+ 
+    <!-- Java -->
     <a href="https://github.com/JGuilhermeSneto/Repo_Java" target="_blank" class="project-card reveal">
-      <p class="project-num">// 002</p>
-      <h3 class="project-title">Repo Java</h3>
-      <p class="project-desc">Repositório de exercícios e estudos focados na linguagem Java, cobrindo desde fundamentos até orientação a objetos.</p>
-      <div class="project-footer">
-        <span class="project-lang">Java</span>
-        <span class="project-arrow">↗</span>
+      <div class="project-preview">
+        <svg class="proj-icon-big" width="64" height="64" viewBox="0 0 16 16" style="image-rendering:pixelated;">
+          <rect x="2" y="5" width="9" height="9" fill="#e76f00"/><rect x="1" y="6" width="1" height="7" fill="#e76f00"/>
+          <rect x="11" y="5" width="3" height="1" fill="#5382a1"/><rect x="11" y="6" width="1" height="4" fill="#5382a1"/>
+          <rect x="12" y="10" width="2" height="1" fill="#5382a1"/><rect x="1" y="14" width="11" height="2" fill="#c85800"/>
+          <rect x="3" y="1" width="1" height="3" fill="#aaa" opacity="0.7"/><rect x="6" y="0" width="1" height="4" fill="#aaa" opacity="0.7"/>
+          <rect x="9" y="1" width="1" height="3" fill="#aaa" opacity="0.7"/>
+        </svg>
+      </div>
+      <div class="project-body">
+        <p class="project-num">// QUEST 002</p>
+        <h3 class="project-title">REPO JAVA</h3>
+        <p class="project-desc">Estudos de Java: fundamentos até orientação a objetos.</p>
+        <div class="project-footer"><span class="project-lang">Java</span><span class="project-arrow">↗</span></div>
       </div>
     </a>
-
-    <a href="https://github.com/JGuilhermeSneto/Sistemascop" target="_blank" class="project-card reveal">
-      <p class="project-num">// 003</p>
-      <h3 class="project-title">Sistemascop</h3>
-      <p class="project-desc">Projeto desenvolvido em Python com foco em sistemas e automação de processos.</p>
-      <div class="project-footer">
-        <span class="project-lang">Python</span>
-        <span class="project-arrow">↗</span>
-      </div>
-    </a>
-
+ 
+    <!-- Biblioteca -->
     <a href="https://github.com/Suanderson/BibliotecaPessoal" target="_blank" class="project-card reveal">
-      <p class="project-num">// 004</p>
-      <h3 class="project-title">Biblioteca Pessoal</h3>
-      <p class="project-desc">Projeto de tópicos avançados do curso usando Django, HTML, CSS e React para consumir uma API mobile.</p>
-      <div class="project-footer">
-        <span class="project-lang">Python / React</span>
-        <span class="project-arrow">↗</span>
+      <div class="project-preview">
+        <svg class="proj-icon-big" width="64" height="64" viewBox="0 0 16 16" style="image-rendering:pixelated;">
+          <rect x="2" y="1" width="12" height="13" fill="#bf00ff"/><rect x="2" y="1" width="2" height="13" fill="#9400d3"/>
+          <rect x="4" y="2" width="9" height="1" fill="#df9fff"/><rect x="4" y="4" width="9" height="1" fill="#df9fff" opacity="0.6"/>
+          <rect x="4" y="6" width="9" height="1" fill="#df9fff" opacity="0.6"/><rect x="4" y="8" width="6" height="1" fill="#df9fff" opacity="0.6"/>
+          <rect x="2" y="14" width="12" height="1" fill="#6a00a0"/>
+          <rect x="11" y="0" width="2" height="5" fill="#ffe600"/><rect x="11" y="5" width="1" height="1" fill="#ffe600"/>
+        </svg>
+      </div>
+      <div class="project-body">
+        <p class="project-num">// QUEST 003</p>
+        <h3 class="project-title">BIBLIOTECA</h3>
+        <p class="project-desc">Django + React para API mobile — tópicos avançados.</p>
+        <div class="project-footer"><span class="project-lang">Python / React</span><span class="project-arrow">↗</span></div>
       </div>
     </a>
-
-    <a href="https://github.com/JGuilhermeSneto" target="_blank" class="project-card reveal" style="border-style: dashed; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; min-height:180px;">
-      <p style="font-family:'Share Tech Mono',monospace; font-size:0.75rem; color:var(--muted); letter-spacing:2px;">VER TODOS</p>
-      <p style="font-family:'Orbitron',monospace; font-size:1.1rem; color:var(--cyan); margin-top:8px;">GitHub →</p>
+ 
+    <!-- Ver todos -->
+    <a href="https://github.com/JGuilhermeSneto" target="_blank" class="project-card project-card-all reveal">
+      <!-- pixel GitHub icon big -->
+      <svg width="48" height="48" viewBox="0 0 16 16" style="image-rendering:pixelated;animation:iconBob 1s step-end infinite;">
+        <rect x="4" y="0" width="8" height="1" fill="#fff"/><rect x="2" y="1" width="12" height="1" fill="#fff"/>
+        <rect x="1" y="2" width="14" height="2" fill="#fff"/><rect x="0" y="4" width="3" height="4" fill="#fff"/>
+        <rect x="13" y="4" width="3" height="4" fill="#fff"/><rect x="1" y="8" width="2" height="3" fill="#fff"/>
+        <rect x="13" y="8" width="2" height="3" fill="#fff"/><rect x="3" y="10" width="10" height="2" fill="#fff"/>
+        <rect x="4" y="12" width="2" height="4" fill="#fff"/><rect x="10" y="12" width="2" height="4" fill="#fff"/>
+        <rect x="6" y="14" width="4" height="2" fill="#fff"/>
+        <rect x="3" y="2" width="2" height="2" fill="#fff"/><rect x="11" y="2" width="2" height="2" fill="#fff"/>
+        <rect x="5" y="5" width="2" height="2" fill="#0a0a0f"/><rect x="9" y="5" width="2" height="2" fill="#0a0a0f"/>
+      </svg>
+      <span style="font-family:'Press Start 2P',monospace;font-size:0.42rem;color:var(--muted);letter-spacing:2px;">VER TODOS</span>
+      <span style="font-family:'Press Start 2P',monospace;font-size:0.65rem;color:var(--cyan);">GITHUB →</span>
     </a>
-
+ 
   </div>
 </section>
-
+ 
 <div class="divider"></div>
-
-<!-- CONTATO -->
+ 
+<!-- ════ CONTATO ════ -->
 <section id="contato">
   <div class="sec-header reveal">
-    <p class="sec-tag">03 — Contato</p>
-    <h2 class="sec-title">Fale <span>comigo</span></h2>
+    <p class="sec-tag">03 — CONTATO</p>
+    <h2 class="sec-title glitch" data-text="FALE COMIGO">FALE <span>COMIGO</span></h2>
   </div>
-
   <div class="contact-grid">
     <div class="contact-text reveal">
-      <p style="margin-bottom:20px;">
-        Quer colaborar em um projeto, tem alguma oportunidade ou apenas quer trocar uma ideia sobre tecnologia?
-      </p>
-      <p style="margin-bottom:20px;">
-        Estou disponível pelo e-mail, GitHub e Instagram. Não hesite em entrar em contato!
-      </p>
-      <p style="color: var(--cyan); font-family: 'Share Tech Mono', monospace; font-size:0.85rem;">
-        > status: [ ONLINE ] pronto para novos desafios
+      <p><span class="menu-arr">▶</span>Quer colaborar, tem oportunidade ou quer trocar ideia sobre tech?</p>
+      <p><span class="menu-arr">▶</span>Disponível pelo e-mail, GitHub, Instagram e LinkedIn. Entre em contato!</p>
+      <p style="margin-top:20px;font-family:'Press Start 2P',monospace;font-size:0.5rem;color:var(--cyan);line-height:2.2;">
+        ▶ STATUS: ONLINE<br>▶ PRONTO: SIM<br>▶ NÍVEL: 5°
       </p>
     </div>
-
     <div class="contact-links reveal">
+ 
+      <!-- Email -->
       <a href="mailto:jguilhermesneto.dev@gmail.com" class="contact-item">
-        <span class="contact-icon">✉</span>
-        <div class="contact-info">
-          <p class="label">E-mail</p>
-          <p class="value">jguilhermesneto.dev@gmail.com</p>
+        <div class="contact-icon-wrap">
+          <svg width="32" height="32" viewBox="0 0 16 16" style="image-rendering:pixelated;">
+            <rect x="0" y="2" width="16" height="12" fill="#ffe600"/>
+            <rect x="0" y="2" width="16" height="1" fill="#aa9900"/>
+            <rect x="0" y="13" width="16" height="1" fill="#aa9900"/>
+            <rect x="0" y="3" width="1" height="1" fill="#1a1a1a"/><rect x="1" y="4" width="1" height="1" fill="#1a1a1a"/>
+            <rect x="2" y="5" width="1" height="1" fill="#1a1a1a"/><rect x="3" y="6" width="1" height="1" fill="#1a1a1a"/>
+            <rect x="4" y="7" width="1" height="1" fill="#1a1a1a"/><rect x="5" y="8" width="1" height="1" fill="#1a1a1a"/>
+            <rect x="6" y="9" width="1" height="1" fill="#1a1a1a"/><rect x="7" y="10" width="2" height="1" fill="#1a1a1a"/>
+            <rect x="9" y="9" width="1" height="1" fill="#1a1a1a"/><rect x="10" y="8" width="1" height="1" fill="#1a1a1a"/>
+            <rect x="11" y="7" width="1" height="1" fill="#1a1a1a"/><rect x="12" y="6" width="1" height="1" fill="#1a1a1a"/>
+            <rect x="13" y="5" width="1" height="1" fill="#1a1a1a"/><rect x="14" y="4" width="1" height="1" fill="#1a1a1a"/>
+            <rect x="15" y="3" width="1" height="1" fill="#1a1a1a"/>
+          </svg>
         </div>
+        <div class="contact-info"><p class="label">E-mail</p><p class="value">jguilhermesneto.dev@gmail.com</p></div>
       </a>
-
+ 
+      <!-- GitHub -->
       <a href="https://github.com/JGuilhermeSneto" target="_blank" class="contact-item">
-        <span class="contact-icon">⌥</span>
-        <div class="contact-info">
-          <p class="label">GitHub</p>
-          <p class="value">JGuilhermeSneto</p>
+        <div class="contact-icon-wrap">
+          <svg width="32" height="32" viewBox="0 0 16 16" style="image-rendering:pixelated;">
+            <rect x="4" y="0" width="8" height="1" fill="#fff"/><rect x="2" y="1" width="12" height="1" fill="#fff"/>
+            <rect x="1" y="2" width="14" height="2" fill="#fff"/><rect x="0" y="4" width="3" height="4" fill="#fff"/>
+            <rect x="13" y="4" width="3" height="4" fill="#fff"/><rect x="1" y="8" width="2" height="3" fill="#fff"/>
+            <rect x="13" y="8" width="2" height="3" fill="#fff"/><rect x="3" y="10" width="10" height="2" fill="#fff"/>
+            <rect x="4" y="12" width="2" height="4" fill="#fff"/><rect x="10" y="12" width="2" height="4" fill="#fff"/>
+            <rect x="6" y="14" width="4" height="2" fill="#fff"/>
+            <rect x="3" y="2" width="2" height="2" fill="#fff"/><rect x="11" y="2" width="2" height="2" fill="#fff"/>
+            <rect x="5" y="5" width="2" height="2" fill="#1a1a2e"/><rect x="9" y="5" width="2" height="2" fill="#1a1a2e"/>
+          </svg>
         </div>
+        <div class="contact-info"><p class="label">GitHub</p><p class="value">JGuilhermeSneto</p></div>
       </a>
-
+ 
+      <!-- Instagram -->
       <a href="https://www.instagram.com/o_jguilherme/" target="_blank" class="contact-item">
-        <span class="contact-icon">◈</span>
-        <div class="contact-info">
-          <p class="label">Instagram</p>
-          <p class="value">@o_jguilherme</p>
+        <div class="contact-icon-wrap">
+          <svg width="32" height="32" viewBox="0 0 16 16" style="image-rendering:pixelated;">
+            <rect x="3" y="2" width="10" height="2" fill="#ff0090"/><rect x="3" y="12" width="10" height="2" fill="#c000c0"/>
+            <rect x="2" y="3" width="2" height="10" fill="#ff0090"/><rect x="12" y="3" width="2" height="10" fill="#c000c0"/>
+            <rect x="6" y="5" width="4" height="1" fill="#ff0090"/><rect x="5" y="6" width="6" height="4" fill="#ff0090"/>
+            <rect x="6" y="10" width="4" height="1" fill="#ff0090"/><rect x="7" y="7" width="2" height="2" fill="#1a1a2e"/>
+            <rect x="12" y="3" width="1" height="1" fill="#ffe600"/>
+          </svg>
         </div>
+        <div class="contact-info"><p class="label">Instagram</p><p class="value">@o_jguilherme</p></div>
       </a>
-
+ 
+      <!-- LinkedIn -->
       <a href="https://www.linkedin.com/in/josé-guilherme-5328a6290" target="_blank" class="contact-item">
-        <span class="contact-icon">◉</span>
-        <div class="contact-info">
-          <p class="label">LinkedIn</p>
-          <p class="value">José Guilherme</p>
+        <div class="contact-icon-wrap">
+          <svg width="32" height="32" viewBox="0 0 16 16" style="image-rendering:pixelated;">
+            <rect x="0" y="0" width="16" height="16" fill="#0077b5"/>
+            <rect x="2" y="6" width="2" height="8" fill="#fff"/><rect x="2" y="3" width="2" height="2" fill="#fff"/>
+            <rect x="6" y="6" width="2" height="8" fill="#fff"/><rect x="8" y="9" width="4" height="5" fill="#fff"/>
+            <rect x="6" y="9" width="6" height="2" fill="#fff"/><rect x="8" y="6" width="4" height="2" fill="#fff"/>
+          </svg>
         </div>
+        <div class="contact-info"><p class="label">LinkedIn</p><p class="value">José Guilherme</p></div>
       </a>
+ 
     </div>
   </div>
 </section>
-
-<!-- FOOTER -->
+ 
+<!-- ════ FOOTER ════ -->
 <footer>
   <span class="footer-logo">JGSneto</span>
-  <span class="footer-copy">© 2025 — José Guilherme da S. Neto</span>
+  <span class="footer-copy">© 2025 — José Guilherme da S. Neto <span class="coin" style="margin-left:8px;">●</span></span>
   <div class="footer-links">
-    <a href="#inicio">Início</a>
-    <a href="#sobre">Sobre</a>
-    <a href="#projetos">Projetos</a>
-    <a href="#contato">Contato</a>
+    <a href="#inicio">Início</a><a href="#sobre">Sobre</a><a href="#projetos">Projetos</a><a href="#contato">Contato</a>
   </div>
 </footer>
-
-<script src="scripts.js"></script>
-</body>
-</html>
+</main>
