@@ -16,3 +16,75 @@ const obs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.targ
 document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
 const k=[38,38,40,40,37,39,37,39,66,65];let kp=0;
 document.addEventListener('keydown',e=>{if(e.keyCode===k[kp])kp++;else kp=0;if(kp===k.length){document.body.style.filter='hue-rotate(90deg) saturate(1.4)';setTimeout(()=>document.body.style.filter='',2500);kp=0;}});
+
+/* Modal Logic */
+const modalOverlay = document.getElementById('appModal');
+const modalTitle = document.getElementById('modalTitle');
+const modalBody = document.getElementById('modalBody');
+const modalClose = document.getElementById('modalClose');
+
+document.querySelectorAll('.trigger-modal').forEach(el => {
+  el.addEventListener('click', (e) => {
+    e.preventDefault();
+    const type = el.getAttribute('data-modal');
+    if (type === 'project') {
+      const title = el.querySelector('.proj-title').innerText;
+      const num = el.querySelector('.proj-num').innerText;
+      const desc = el.querySelector('.proj-desc').innerText;
+      const repo = el.getAttribute('href');
+      const iconHtml = el.querySelector('.proj-icon').innerHTML;
+      
+      modalTitle.innerText = title;
+      modalBody.innerHTML = `
+        <div class="modal-m-img">
+          ${iconHtml}
+          <span>PREVIEW DO PROJETO</span>
+        </div>
+        <p class="modal-m-desc">${num} — ${desc}</p>
+        <div class="modal-m-btn" style="display:flex;">
+          <a href="${repo}" target="_blank" class="btn btn-primary" style="margin: 0 auto;">
+            <svg width="18" height="18" viewBox="0 0 28 28" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M14 2C7.37 2 2 7.37 2 14c0 5.31 3.44 9.8 8.2 11.4.6.11.82-.26.82-.58v-2.03c-3.34.72-4.04-1.61-4.04-1.61-.54-1.37-1.33-1.74-1.33-1.74-1.08-.74.08-.73.08-.73 1.2.08 1.83 1.23 1.83 1.23 1.07 1.82 2.79 1.3 3.47.99.1-.78.42-1.3.76-1.6-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.12-.3-.54-1.52.12-3.18 0 0 1-.32 3.3 1.23a11.5 11.5 0 013-.4c1.02.01 2.04.14 3 .4 2.28-1.55 3.29-1.23 3.29-1.23.66 1.66.24 2.88.12 3.18.77.84 1.24 1.91 1.24 3.22 0 4.61-2.81 5.63-5.48 5.92.43.37.82 1.1.82 2.22v3.29c0 .32.22.7.83.58A12.02 12.02 0 0026 14C26 7.37 20.63 2 14 2z" fill="currentColor"/></svg>
+            ACESSO AO GITHUB
+          </a>
+        </div>
+      `;
+      // attach cursor effect
+      setTimeout(() => {
+        const dBtn = modalBody.querySelector('a');
+        if(dBtn) {
+          dBtn.addEventListener('mouseenter',()=>{cur.style.width='14px';cur.style.height='14px';cur.style.background='#ff6b85';ring.style.width='38px';ring.style.height='38px';ring.style.opacity='.75';});
+          dBtn.addEventListener('mouseleave',()=>{cur.style.width='9px';cur.style.height='9px';cur.style.background='#5ab87a';ring.style.width='28px';ring.style.height='28px';ring.style.opacity='.6';});
+        }
+      }, 50);
+
+    } else if (type === 'cert') {
+      const title = el.querySelector('.cert-title').innerText;
+      const issuer = el.querySelector('.cert-issuer').innerText;
+      const year = el.querySelector('.cert-year').innerText;
+      const hours = el.querySelector('.cert-hours').innerText;
+      
+      modalTitle.innerText = "CERTIFICADO DIGITAL";
+      modalBody.innerHTML = `
+        <div class="mock-pdf">
+          <h4>${issuer}</h4>
+          <h5>${title}</h5>
+          <p>Documento digital autenticado.<br>Concluído em ${year} com carga horária de ${hours}.</p>
+          <div class="pdf-badge">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+          </div>
+        </div>
+      `;
+    }
+    modalOverlay.classList.add('active');
+  });
+});
+
+modalClose.addEventListener('click', () => {
+  modalOverlay.classList.remove('active');
+});
+
+modalOverlay.addEventListener('click', (e) => {
+  if (e.target === modalOverlay) {
+    modalOverlay.classList.remove('active');
+  }
+});
