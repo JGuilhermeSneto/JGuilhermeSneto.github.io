@@ -47,7 +47,7 @@ main{position:relative;z-index:10;padding-top:56px;}
 section{position:relative;z-index:1;padding:96px 56px;max-width:1080px;margin:0 auto;}
 #inicio{min-height:100vh;display:flex;align-items:center;max-width:100%;}
 .hero-inner{max-width:1080px;margin:0 auto;padding:60px 56px 0;}
-.hero-avatar{width:110px;height:110px;border-radius:50%;border:2.5px solid var(--tx-accent);margin-bottom:22px;animation:slideUp .5s ease both;box-shadow:0 0 24px rgba(255,107,133,0.35);object-fit:cover;}
+.hero-avatar{width:120px;height:120px;border-radius:12px;border:1px solid rgba(100,200,140,0.25);border-top:2px solid rgba(168,255,200,0.45);background:rgba(8,28,18,0.55);padding:4px;margin-bottom:24px;animation:slideUp .5s ease both;box-shadow:0 12px 48px rgba(0,0,0,0.3);object-fit:cover;}
 .tag-line{font-family:'JetBrains Mono',monospace;font-size:.82rem;letter-spacing:3px;color:var(--tx-label);margin-bottom:20px;animation:slideUp .5s ease both;animation-delay:.1s;}
 .tag-line::before{content:'// ';color:var(--tx-muted);}
 .hero-name{font-family:'Press Start 2P',monospace;font-size:clamp(1.4rem,3.5vw,2.6rem);line-height:1.55;color:var(--tx-white);text-shadow:0 3px 28px rgba(0,0,0,0.8),0 0 60px rgba(80,180,120,0.25);margin-bottom:18px;animation:slideUp .5s ease both;animation-delay:.2s;}
