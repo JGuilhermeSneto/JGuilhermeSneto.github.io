@@ -33,6 +33,21 @@ document.querySelectorAll('.trigger-modal').forEach(el => {
       const desc = el.querySelector('.proj-desc').innerText;
       const repo = el.getAttribute('href');
       const iconHtml = el.querySelector('.proj-icon').innerHTML;
+      const snapshots = el.getAttribute('data-snapshots');
+      let snapshotsHtml = '';
+      if (snapshots) {
+        const snapList = snapshots.split(',');
+        snapshotsHtml = `
+          <div class="snapshot-header">VISUALIZAÇÃO DO SISTEMA</div>
+          <div class="snapshot-gallery">
+            ${snapList.map(path => `
+              <div class="snapshot-item">
+                <img src="${path}" alt="Snapshot">
+              </div>
+            `).join('')}
+          </div>
+        `;
+      }
       
       modalTitle.innerText = title;
       modalBody.innerHTML = `
@@ -41,6 +56,7 @@ document.querySelectorAll('.trigger-modal').forEach(el => {
           <span>PREVIEW DO PROJETO</span>
         </div>
         <p class="modal-m-desc">${num} — ${desc}</p>
+        ${snapshotsHtml}
         <div class="modal-m-btn" style="display:flex;">
           <a href="${repo}" target="_blank" class="btn btn-primary" style="margin: 0 auto;">
             <svg width="18" height="18" viewBox="0 0 28 28" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M14 2C7.37 2 2 7.37 2 14c0 5.31 3.44 9.8 8.2 11.4.6.11.82-.26.82-.58v-2.03c-3.34.72-4.04-1.61-4.04-1.61-.54-1.37-1.33-1.74-1.33-1.74-1.08-.74.08-.73.08-.73 1.2.08 1.83 1.23 1.83 1.23 1.07 1.82 2.79 1.3 3.47.99.1-.78.42-1.3.76-1.6-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.12-.3-.54-1.52.12-3.18 0 0 1-.32 3.3 1.23a11.5 11.5 0 013-.4c1.02.01 2.04.14 3 .4 2.28-1.55 3.29-1.23 3.29-1.23.66 1.66.24 2.88.12 3.18.77.84 1.24 1.91 1.24 3.22 0 4.61-2.81 5.63-5.48 5.92.43.37.82 1.1.82 2.22v3.29c0 .32.22.7.83.58A12.02 12.02 0 0026 14C26 7.37 20.63 2 14 2z" fill="currentColor"/></svg>
@@ -55,6 +71,11 @@ document.querySelectorAll('.trigger-modal').forEach(el => {
           dBtn.addEventListener('mouseenter',()=>{cur.style.width='14px';cur.style.height='14px';cur.style.background='#ff6b85';ring.style.width='38px';ring.style.height='38px';ring.style.opacity='.75';});
           dBtn.addEventListener('mouseleave',()=>{cur.style.width='9px';cur.style.height='9px';cur.style.background='#5ab87a';ring.style.width='28px';ring.style.height='28px';ring.style.opacity='.6';});
         }
+        // attach cursor to snapshot items too
+        modalBody.querySelectorAll('.snapshot-item').forEach(item => {
+          item.addEventListener('mouseenter',()=>{cur.style.width='14px';cur.style.height='14px';cur.style.background='#ff6b85';ring.style.width='38px';ring.style.height='38px';ring.style.opacity='.75';});
+          item.addEventListener('mouseleave',()=>{cur.style.width='9px';cur.style.height='9px';cur.style.background='#5ab87a';ring.style.width='28px';ring.style.height='28px';ring.style.opacity='.6';});
+        });
       }, 50);
 
     } else if (type === 'cert') {

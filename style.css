@@ -47,6 +47,7 @@ main{position:relative;z-index:10;padding-top:56px;}
 section{position:relative;z-index:1;padding:96px 56px;max-width:1080px;margin:0 auto;}
 #inicio{min-height:100vh;display:flex;align-items:center;max-width:100%;}
 .hero-inner{max-width:1080px;margin:0 auto;padding:60px 56px 0;}
+.hero-avatar{width:110px;height:110px;border-radius:50%;border:2.5px solid var(--tx-accent);margin-bottom:22px;animation:slideUp .5s ease both;box-shadow:0 0 24px rgba(255,107,133,0.35);object-fit:cover;}
 .tag-line{font-family:'JetBrains Mono',monospace;font-size:.82rem;letter-spacing:3px;color:var(--tx-label);margin-bottom:20px;animation:slideUp .5s ease both;animation-delay:.1s;}
 .tag-line::before{content:'// ';color:var(--tx-muted);}
 .hero-name{font-family:'Press Start 2P',monospace;font-size:clamp(1.4rem,3.5vw,2.6rem);line-height:1.55;color:var(--tx-white);text-shadow:0 3px 28px rgba(0,0,0,0.8),0 0 60px rgba(80,180,120,0.25);margin-bottom:18px;animation:slideUp .5s ease both;animation-delay:.2s;}
@@ -482,4 +483,60 @@ body{
 }
 .mock-pdf .pdf-badge svg {
   color: #fff;
+}
+
+/* Snapshot Gallery */
+.snapshot-header {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem;
+  color: var(--tx-label);
+  margin: 20px 0 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  letter-spacing: 2px;
+}
+.snapshot-header::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: rgba(168, 255, 200, 0.2);
+}
+.snapshot-gallery {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  padding-bottom: 12px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--tx-accent) rgba(0,0,0,0.2);
+}
+.snapshot-gallery::-webkit-scrollbar {
+  height: 4px;
+}
+.snapshot-gallery::-webkit-scrollbar-thumb {
+  background: var(--tx-accent);
+  border-radius: 10px;
+}
+.snapshot-item {
+  flex: 0 0 240px;
+  height: 150px;
+  border: 1px solid rgba(168, 255, 200, 0.2);
+  border-radius: 8px;
+  overflow: hidden;
+  position: relative;
+  cursor: pointer;
+  transition: border-color 0.3s, transform 0.3s;
+}
+.snapshot-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s;
+}
+.snapshot-item:hover {
+  border-color: var(--tx-accent);
+  transform: translateY(-2px);
+}
+.snapshot-item:hover img {
+  transform: scale(1.05);
 }
